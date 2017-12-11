@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import SearchBox from './SearchBox.js'
 import MovieInfo from './MovieInfo.js'
 import MovieLocationMap from './MovieLocationMap.js'
@@ -13,7 +13,7 @@ class App extends Component {
         </div>
         <MovieLocationMap></MovieLocationMap>
       </div>
-    );
+    )
   }
 }
 
