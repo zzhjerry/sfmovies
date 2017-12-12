@@ -5,19 +5,21 @@ import superagent from 'superagent'
 /* components */
 import MovieLocationMap from './MovieLocationMap.js'
 import Select from 'react-select'
+import MovieInfo from './MovieInfo.js'
 import 'react-select/dist/react-select.css'
 
 class App extends Component {
   render() {
-    const { search, titles } = this.state
+    const { search, titles, currentMovie } = this.state
     return (
       <div className="d-flex h-100">
-        <div className="w-25 m-3">
+        <div className="w-25 m-3 d-flex flex-column justify-content-between">
           <Select
             value={search}
             onChange={this.onSearchChanged}
             options={titles}>
           </Select>
+          <MovieInfo currentMovie={currentMovie}></MovieInfo>
         </div>
 
         <MovieLocationMap
@@ -69,8 +71,12 @@ class App extends Component {
       })
   }
 
-  onSearchChanged(value) {
-    this.setState({ search: value })
+  onSearchChanged(title) {
+    const { movies } = this.state
+    this.setState({
+      search: title,
+      currentMovie: movies[title.value]
+    })
   }
 
   selectRandomMovie() {
