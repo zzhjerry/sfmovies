@@ -35,14 +35,13 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      titles: [],
-      movies: {}, // keyed by movie name
-      currentMovie: {},
-      search: '',
-      positions: []
+      titles: [], // array of { value: ..., title: ... } pairs used for autocomplete
+      movies: {}, // fetched from sfdata api, keyed by movie name (reformated)
+      currentMovie: {}, // used to display current movie's info
+      search: '', // the search text
+      positions: [] // used to display the markers
     }
     this.fetchMovies$Q = this.fetchMovies$Q.bind(this)
-    this.selectRandomMovie = this.selectRandomMovie.bind(this)
     this.onSearchChanged = this.onSearchChanged.bind(this)
     this.getPositions = this.getPositions.bind(this)
   }
@@ -53,19 +52,19 @@ class App extends Component {
         titles: _.map(movies, (_, k) => ({ value: k, label: k })),
         movies: movies
       })
-      this.selectRandomMovie()
     })
   }
 
   fetchMovies$Q() {
     return superagent.get('https://data.sfgov.org/resource/wwmu-gmzc.json')
       .then((res) => {
-        const movies = res.body // this is an array
+        const movies = res.body // this is an array of movies with duplicate title
+        // group movies by title and merge location information into an array
         const moviesKeyedByTitle = _.reduce(movies, (acc, value, index) => {
           const { title, locations } = value
           if (!acc[title]) {
             acc[title] = value
-            acc[title].locations =[locations]
+            acc[title].locations = _.compact([locations])
           } else {
             acc[title].locations.push(locations)
           }
@@ -86,6 +85,10 @@ class App extends Component {
   }
 
   getPositions(locations) {
+    if (_.isEmpty(locations)) {
+      this.setState({ positions: [] })
+      return
+    }
     const requests$Q = locations.map(location => {
       location = encodeURIComponent(location)
       return superagent.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`)
@@ -96,16 +99,6 @@ class App extends Component {
       })
     }).then(positions => {
       this.setState({ positions: _.compact(positions) })
-    })
-  }
-
-  selectRandomMovie() {
-    // only run when search text isn't empty
-    if (this.state.movieSearch) return
-    const { titles, movies } = this.state
-    const title = titles[_.random(0, titles.length)]
-    this.setState({
-      currentMovie: movies[title] || {}
     })
   }
 }
