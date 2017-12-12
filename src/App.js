@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import superagent from 'superagent'
+import Q from 'bluebird'
+import { apiKey } from './apiKey.js'
 
 /* components */
 import MovieLocationMap from './MovieLocationMap.js'
@@ -10,7 +12,7 @@ import 'react-select/dist/react-select.css'
 
 class App extends Component {
   render() {
-    const { search, titles, currentMovie } = this.state
+    const { search, titles, currentMovie, positions } = this.state
     return (
       <div className="d-flex h-100">
         <div className="w-25 m-3 d-flex flex-column justify-content-between">
@@ -24,7 +26,7 @@ class App extends Component {
 
         <MovieLocationMap
           className="w-75"
-          positions={[{ lat: 37.699912, lng: -122.443153 }]}>
+          positions={positions}>
         </MovieLocationMap>
       </div>
     )
@@ -36,11 +38,13 @@ class App extends Component {
       titles: [],
       movies: {}, // keyed by movie name
       currentMovie: {},
-      search: ''
+      search: '',
+      positions: []
     }
     this.fetchMovies$Q = this.fetchMovies$Q.bind(this)
     this.selectRandomMovie = this.selectRandomMovie.bind(this)
     this.onSearchChanged = this.onSearchChanged.bind(this)
+    this.getPositions = this.getPositions.bind(this)
   }
 
   componentDidMount() {
@@ -73,9 +77,25 @@ class App extends Component {
 
   onSearchChanged(title) {
     const { movies } = this.state
+    const currentMovie = movies[title.value]
     this.setState({
       search: title,
-      currentMovie: movies[title.value]
+      currentMovie
+    })
+    this.getPositions(currentMovie.locations)
+  }
+
+  getPositions(locations) {
+    const requests$Q = locations.map(location => {
+      location = encodeURIComponent(location)
+      return superagent.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`)
+    })
+    Q.all(requests$Q).then(responses => {
+      return responses.map(response => {
+        return _.get(response.body, 'results.0.geometry.location')
+      })
+    }).then(positions => {
+      this.setState({ positions: _.compact(positions) })
     })
   }
 
