@@ -1,17 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
 
-const Title = ({ title }) => {
-  const style = {
-
-  }
-  return (
-    <div>
-      {title && <div >{title}</div>}
-    </div>
-  )
-}
-
 const MovieInfo = (props) => {
   const {
     title, locations=[], director, writer, production_company,
