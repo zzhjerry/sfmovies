@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import superagent from 'superagent'
 
+/* components */
+import MovieLocationMap from './MovieLocationMap.js'
+
 class App extends Component {
   render() {
     return (
-      <div className="d-flex">
+      <div className="d-flex h-100">
         <div className="w-25">
         </div>
+        <MovieLocationMap className="w-75"></MovieLocationMap>
       </div>
     )
   }

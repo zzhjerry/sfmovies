@@ -15,6 +15,10 @@ This app shows a map of San Francisco with markers denoting places a film is fil
 
 ### `<MovieLocationMap />`
 
+**Props:**
+
+- `positions` (Array<LatLngLiteral>): an array of [LatLngLiteral](https://developers.google.com/maps/documentation/javascript/3.exp/reference#LatLngLiteral) that are used to display markers on the map
+
 ## Security
 
 According to [this post](https://stackoverflow.com/a/39625963/2599541), google map api key has to be public on web source code, so I've restricted my API key to be used by only this app's address.
