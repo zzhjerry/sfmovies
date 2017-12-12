@@ -23,7 +23,7 @@ const MovieLocationMap = compose(
   <GoogleMap
   defaultZoom={11}
   defaultCenter={{ lat: 37.699912, lng: -122.443153 }} >
-  <Marker position={{ lat: 37.699912, lng: -122.443153 }} />
+  {props.positions.map(position => <Marker position={position} />)}
   </GoogleMap>
  )
 

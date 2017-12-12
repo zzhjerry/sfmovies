@@ -3,15 +3,22 @@ import _ from 'lodash'
 import superagent from 'superagent'
 
 /* components */
+import SearchBox from './SearchBox.js'
 import MovieLocationMap from './MovieLocationMap.js'
 
 class App extends Component {
   render() {
+    const { search } = this.state
     return (
       <div className="d-flex h-100">
-        <div className="w-25">
+        <div className="w-25 m-3">
+          <SearchBox search={search} onSearchChanged={this.onSearchChanged}></SearchBox>
         </div>
-        <MovieLocationMap className="w-75"></MovieLocationMap>
+
+        <MovieLocationMap
+          className="w-75"
+          positions={[{ lat: 37.699912, lng: -122.443153 }]}>
+        </MovieLocationMap>
       </div>
     )
   }
@@ -22,10 +29,11 @@ class App extends Component {
       titles: [],
       movies: {}, // keyed by movie name
       currentMovie: {},
-      movieSearch: ''
+      search: ''
     }
     this.fetchMovies$Q = this.fetchMovies$Q.bind(this)
     this.selectRandomMovie = this.selectRandomMovie.bind(this)
+    this.onSearchChanged = this.onSearchChanged.bind(this)
   }
 
   componentDidMount() {
@@ -54,6 +62,10 @@ class App extends Component {
         }, {})
         return moviesKeyedByTitle
       })
+  }
+
+  onSearchChanged(event) {
+    this.setState({ search: event.target.value })
   }
 
   selectRandomMovie() {
