@@ -2,14 +2,24 @@
 
 This app shows a map of San Francisco with markers denoting places a film is filmed at. This is how it works:
 
-- When the app is loaded, it will display a random movie's filmed locations. And this random movie will be changed every 5s.
-- The map will occupy the full height of right side. The left side will be a search bar and a bunch of texts showing the information of the movie such as title, release year, production company, director, writer, actor1,2,3, and locations.
-- When people start typing movie names, there will be up to 8 autocompleted candidates as a list below the input area. The movie infomation text will disappear. The markers on the map will show the locations of first movie candidate.
-- If user type an invalid movie name, UI will show "Movie name not found"
+- When the app is loaded, it will display a map on the right and a search box on the left.
+- When user selected a movie, left side will show a bunch of texts showing the information of the movie such as title, release year, production company, director, writer, actor1,2,3, and locations.
+- If user type an invalid movie name, markers on the map will be removed and there will not be autocompletion.
 
 ## Components
 
+### `<App />`
+
+This top level component controls the state of the whole application. It:
+
+- load all the movies into a local state when a app is mounted
+- find the `currentMovie` and `positions` which will be used by `MovieInfo` and `MovieLocationMap` component respectively.
+
 ### `<MovieInfo />`
+
+**props:**
+
+- `currentMovie` {Object}: a movie object with `title`, `release_year`, `production_company`, `director`, `writer`, `actor_1,2,3` and `locations`
 
 ### `<MovieLocationMap />`
 
@@ -23,10 +33,10 @@ According to [this post](https://stackoverflow.com/a/39625963/2599541), google m
 
 ## Architecture
 
-This is a static web app without a backend system hosted on Netlify.
+This is a serverless web app hosted on Netlify.
 
-- SF movie data with locaitons are retrived from [here](https://data.sfgov.org/resource/wwmu-gmzc.json)
-- Location names will be turned into latitude and longitude via [Geocoding API](https://developers.google.com/maps/documentation/geocoding/intro)
+- SF movie data are retrived from [here](https://data.sfgov.org/resource/wwmu-gmzc.json) with an ajax call
+- Location names will be turned into latitude and longitude via [Geocoding API](https://developers.google.com/maps/documentation/geocoding/intro) (also done by ajax call)
 
 ## Libraries
 
