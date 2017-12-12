@@ -46,3 +46,7 @@ This is a serverless web app hosted on Netlify.
 - [reactstrap](https://reactstrap.github.io/)
 - [superagent](https://github.com/visionmedia/superagent)
 - [react-select](https://github.com/JedWatson/react-select)
+
+## Screenshot
+
+![SF Movies](screenshot.png)
