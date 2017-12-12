@@ -3,16 +3,21 @@ import _ from 'lodash'
 import superagent from 'superagent'
 
 /* components */
-import SearchBox from './SearchBox.js'
 import MovieLocationMap from './MovieLocationMap.js'
+import Select from 'react-select'
+import 'react-select/dist/react-select.css'
 
 class App extends Component {
   render() {
-    const { search } = this.state
+    const { search, titles } = this.state
     return (
       <div className="d-flex h-100">
         <div className="w-25 m-3">
-          <SearchBox search={search} onSearchChanged={this.onSearchChanged}></SearchBox>
+          <Select
+            value={search}
+            onChange={this.onSearchChanged}
+            options={titles}>
+          </Select>
         </div>
 
         <MovieLocationMap
@@ -39,7 +44,7 @@ class App extends Component {
   componentDidMount() {
     this.fetchMovies$Q().then(movies => {
       this.setState({
-        titles: Object.keys(movies),
+        titles: _.map(movies, (_, k) => ({ value: k, label: k })),
         movies: movies
       })
       this.selectRandomMovie()
@@ -64,8 +69,8 @@ class App extends Component {
       })
   }
 
-  onSearchChanged(event) {
-    this.setState({ search: event.target.value })
+  onSearchChanged(value) {
+    this.setState({ search: value })
   }
 
   selectRandomMovie() {

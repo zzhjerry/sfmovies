@@ -9,22 +9,6 @@ This app shows a map of San Francisco with markers denoting places a film is fil
 
 ## Components
 
-### `<SearchBox />`
-
-**Props:**
-
-- `search` {string}: the movie search text from the user
-- `movieCandidates` {Array<string>}: an array of movie names as autocomplete candidates
-- `onSearchChanged` {Function}:
-    - generate a list of movie candiates implied from the search text.
-    - set the first candidate as `currentMovie`
-    - get the positions based on locations of the `currentMovie`, which will be used to display marker on the map.
-    - if there's no candidate, set `currentMovie` to empty object and diaplsy "Movie name not found"
-- `onMovieSelected` {Function}:
-    - set `search` to the given movie name
-    - set `currentMovie` to the movie whose title match with `search`
-    - clear candidate list
-
 ### `<MovieInfo />`
 
 ### `<MovieLocationMap />`
@@ -51,3 +35,4 @@ This is a static web app without a backend system hosted on Netlify.
 - [bootstrap](https://getbootstrap.com/)
 - [reactstrap](https://reactstrap.github.io/)
 - [superagent](https://github.com/visionmedia/superagent)
+- [react-select](https://github.com/JedWatson/react-select)
