@@ -32,3 +32,4 @@ This is a static web app without a backend system hosted on Netlify.
 - [lodash](https://lodash.com/docs/4.17.4)
 - [bootstrap](https://getbootstrap.com/)
 - [reactstrap](https://reactstrap.github.io/)
+- [superagent](https://github.com/visionmedia/superagent)
