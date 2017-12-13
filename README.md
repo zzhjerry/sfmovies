@@ -50,3 +50,9 @@ This is a serverless web app hosted on Netlify.
 ## Screenshot
 
 ![SF Movies](screenshot.png)
+
+
+## Change Log
+
+### v1.0.0 - 20171213 (@jerry)
+* Able to show where various movies are filmed.
